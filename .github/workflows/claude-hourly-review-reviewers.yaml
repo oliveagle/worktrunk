@@ -54,15 +54,9 @@ jobs:
 
             ## Step 1: Find recent Claude CI runs
 
-            Use `gh run list` to find all runs from Claude workflows in the past hour:
+            Run `.github/scripts/list-recent-runs.sh` to get a JSON array of recently completed Claude CI runs (filters out in-progress runs and keeps only those that finished in the past hour — see script comments for details).
 
-            ```
-            for wf in claude-review claude-ci-fix claude-issue-triage claude-mention claude-renovate claude-hourly-review-reviewers claude-nightly-cleaner; do
-              gh run list --workflow "${wf}.yaml" --created ">=$(date -d '1 hour ago' +%Y-%m-%dT%H:%M:%S)" --json databaseId,conclusion,createdAt --limit 50
-            done
-            ```
-
-            If no Claude CI runs occurred in the past hour, report "no runs to review" and exit.
+            If the output is an empty array, report "no runs to review" and exit.
 
             ## Step 2: Download session logs
 
